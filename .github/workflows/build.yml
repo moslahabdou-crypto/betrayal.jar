@@ -1,0 +1,20 @@
+name: Build JAR
+on: [push, workflow_dispatch]
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 17
+      - run: |
+          unzip -q betrayal-forge-1.20.1.zip -d proj
+          cd proj
+          chmod +x gradlew
+          ./gradlew build
+      - uses: actions/upload-artifact@v4
+        with:
+          name: betrayal-jar
+          path: proj/build/libs/*.jar
